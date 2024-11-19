@@ -1,227 +1,106 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(45deg, #ff6f61, #f6a8b3, #ffe0d7);
-    background-size: 300% 300%;
-    animation: gradient-animation 10s ease infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
-    overflow-x: hidden;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Things</title>
+    <link rel="stylesheet" href="css/favorites.css">
+</head>
+<body>
+    <div class="favorites-container">
+        <div class="favorites-note">
+            <!-- Phần hiển thị chào hỏi tên người dùng -->
+            <p class="small-text" id="greeting">Chào bạn</p>
+            <p class="large-text">Tớ thích các ngành điện tử</p>
+            <p class="sub-text">Tớ thích nghịch ngợm về máy tính</p>
+            <p class="sub-text">Tớ thích chơi game như LOL, Valorant,...</p>
+    
+            <p>Chia sẻ thêm điều gì thú vị mà bạn muốn nói với tớ:</p>
+            <textarea id="additionalInput" placeholder="Nhập ý tưởng của bạn..." rows="4"></textarea>
+            <p id="responseMessage" class="response-message"></p> <!-- Vị trí hiển thị thông điệp -->
+            <!-- Phần để hiển thị thông điệp "TỚ BIẾT MÀ" -->
+            <p id="finalMessage" class="response-message" style="display: none; font-size: 24px; font-weight: bold;">TỚ BIẾT MÀ</p>
+        </div>
+    </div>
 
-/* Khung chính */
-.main-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1200px;
-    gap: 30px;
-    flex-wrap: wrap;
-    padding: 20px;
-}
+    <div class="questions-container">
+        <div class="questions-note">
+            <!-- Các câu hỏi của phần questions-container giữ nguyên -->
+            <p>Cậu có thích chơi game không?</p>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="game" id="yesGame" class="question-radio">
+                    Có
+                    <span class="checkmark"></span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="game" id="noGame" class="question-radio">
+                    Không
+                    <span class="checkmark"></span>
+                </label>
+            </div>
 
-/* Khung sở thích và câu hỏi có chiều rộng bằng nhau */
-.favorites-container,
-.questions-container {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 30px;
-    width: 48%;
-    min-width: 280px; /* Đảm bảo khung không quá nhỏ */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
+            <p>Cậu có đam mê một bộ môn thể thao như tập gym, cầu lông...?</p>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="sports" id="yesSports" class="question-radio">
+                    Có
+                    <span class="checkmark"></span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="sports" id="noSports" class="question-radio">
+                    Không
+                    <span class="checkmark"></span>
+                </label>
+            </div>
 
-/* Phần ghi chú sở thích */
-.favorites-note,
-.questions-note {
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 30px;
-    width: 100%;
-    color: #333;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    box-sizing: border-box;
-}
+            <p>Vậy theo cậu cái gì thú vị?</p>
+            <textarea id="interestingInput" placeholder="Hãy chia sẻ điều gì thú vị với tớ..." rows="4"></textarea>
 
-/* Phần câu hỏi và các tùy chọn */
-.options {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-}
+            <button id="sendButton" class="custom-button">Gửi</button>
+            <p id="responseMessage" class="response-message"></p> 
+        </div>
+    </div>
 
-.option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 18px;
-}
+    <div class="back-button-container">
+        <a href="index.html">
+            <button class="custom-button">Quay lại trang đầu</button>
+        </a>
+    </div>
 
-.question-radio {
-    display: none;
-}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('userName');
+            const greetingElement = document.getElementById('greeting');
 
-.checkmark {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #333;
-    border-radius: 4px;
-    display: inline-block;
-    position: relative;
-    transition: all 0.2s ease;
-}
+            // Hiển thị tên người dùng nếu có trong localStorage
+            if (userName) {
+                greetingElement.textContent = `Chào ${userName}`;
+            }
 
-.question-radio:checked + .checkmark {
-    background-color: #4caf50;
-    border-color: #4caf50;
-}
+            // Đoạn văn bản cần hiển thị
+            const fullText = "Còn thiếu dòng 'tớ là người đẹp trai nhất' ở phần giới thiệu kìa";
 
-.question-radio:checked + .checkmark::after {
-    content: "✔";
-    position: absolute;
-    top: 0;
-    left: 4px;
-    font-size: 16px;
-    color: white;
-}
-
-.question-radio:not(:checked) + .checkmark::after {
-    content: "✘";
-    position: absolute;
-    top: 0;
-    left: 4px;
-    font-size: 16px;
-    color: #f44336;
-}
-
-/* Textarea cho phần chia sẻ thêm */
-#additionalInput {
-    width: 80%;
-    padding: 10px;
-    margin-top: 20px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    resize: vertical;
-    min-height: 100px;
-}
-
-/* Nút gửi chia sẻ */
-#sendAdditionalButton {
-    background-color: #FF9398;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-}
-
-#sendAdditionalButton:hover {
-    background-color: #e88388;
-}
-
-/* Nút quay lại trang đầu */
-.back-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.custom-button {
-    background-color: #ECD06F;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-.custom-button:hover {
-    background-color: #d0b262;
-}
-
-/* Gradient animation */
-@keyframes colorShift {
-    0% { background-color: #fce4ec; }
-    50% { background-color: #f8bbd0; }
-    100% { background-color: #fce4ec; }
-}
-
-body {
-    animation: colorShift 5s infinite;
-}
-
-/* Media query cho điện thoại */
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .favorites-container, .questions-container {
-        width: 90%;  /* Đảm bảo cả hai khung chiếm 90% chiều rộng */
-        padding: 20px;
-    }
-
-    .favorites-note, .questions-note {
-        padding: 20px;
-    }
-
-    #additionalInput {
-        width: 100%;
-        font-size: 14px;
-    }
-
-    #sendAdditionalButton {
-        padding: 8px 15px;
-    }
-
-    .options {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .option {
-        font-size: 16px;
-    }
-
-    /* Cải thiện kích thước checkmark */
-    .checkmark {
-        width: 25px;
-        height: 25px;
-    }
-
-    .question-radio:checked + .checkmark::after {
-        font-size: 18px;
-    }
-
-    .question-radio:not(:checked) + .checkmark::after {
-        font-size: 18px;
-    }
-}
-
-#responseMessage {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FF9398;
-    margin-top: 10px;
-    text-align: center;
-}
+            // Lắng nghe sự kiện nhập liệu của người dùng
+            const additionalInput = document.getElementById('additionalInput');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            additionalInput.addEventListener('input', () => {
+                let currentText = additionalInput.value;
+                
+                // Nếu người dùng bắt đầu gõ, hệ thống sẽ thay thế chữ đã gõ dần dần
+                if (currentText.length < fullText.length) {
+                    // Chạy hiệu ứng gõ chữ tự động
+                    let typedText = fullText.slice(0, currentText.length + 1);
+                    additionalInput.value = typedText;
+                } else {
+                    // Nếu người dùng đã gõ đủ, không làm gì thêm
+                    additionalInput.value = fullText;
+                    // Hiển thị dòng "TỚ BIẾT MÀ" sau khi nhập xong
+                    finalMessage.style.display = 'block';  // Hiển thị thông điệp "TỚ BIẾT MÀ"
+                }
+            });
+        });
+    </script>
+</body>
+</html>
