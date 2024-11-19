@@ -23,6 +23,7 @@ body {
     gap: 30px;
     flex-wrap: wrap;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Khung sở thích và câu hỏi có chiều rộng bằng nhau */
@@ -31,13 +32,14 @@ body {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
     width: 48%;
-    min-width: 280px; /* Đảm bảo khung không quá nhỏ */
+    min-width: 280px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     border-radius: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 /* Phần ghi chú sở thích */
@@ -172,16 +174,20 @@ body {
 /* Media query cho điện thoại */
 @media (max-width: 768px) {
     .main-container {
-        flex-direction: column;
+        flex-direction: column; /* Các phần tử chính xuống dòng */
         align-items: center;
+        gap: 20px; /* Tăng khoảng cách giữa các khối */
     }
 
-    .favorites-container, .questions-container {
-        width: 90%;  /* Đảm bảo cả hai khung chiếm 90% chiều rộng */
+    .favorites-container,
+    .questions-container {
+        width: 90%; /* Đảm bảo cả hai khung chiếm 90% chiều rộng */
         padding: 20px;
+        box-sizing: border-box; /* Đảm bảo không bị thụt lề */
     }
 
-    .favorites-note, .questions-note {
+    .favorites-note,
+    .questions-note {
         padding: 20px;
     }
 
@@ -216,12 +222,62 @@ body {
     .question-radio:not(:checked) + .checkmark::after {
         font-size: 18px;
     }
+
+    /* Đảm bảo nội dung căn giữa */
+    .favorites-container,
+    .questions-container,
+    .favorites-note,
+    .questions-note {
+        max-width: 100%;
+    }
 }
 
-#responseMessage {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FF9398;
-    margin-top: 10px;
-    text-align: center;
+/* Media query cho điện thoại màn hình dọc */
+@media (orientation: portrait) and (max-width: 768px) {
+    .main-container {
+        padding: 10px; /* Giảm padding cho phù hợp với màn hình nhỏ */
+    }
+
+    .favorites-container,
+    .questions-container {
+        width: 100%; /* Đảm bảo cả hai khung chiếm 100% chiều rộng */
+        margin-bottom: 15px; /* Thêm khoảng cách giữa các khung */
+    }
+
+    .favorites-note,
+    .questions-note {
+        padding: 15px;
+    }
+
+    #additionalInput {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #sendAdditionalButton {
+        padding: 8px 15px;
+    }
+
+    .options {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .option {
+        font-size: 16px;
+    }
+
+    /* Điều chỉnh checkmark */
+    .checkmark {
+        width: 25px;
+        height: 25px;
+    }
+
+    .question-radio:checked + .checkmark::after {
+        font-size: 18px;
+    }
+
+    .question-radio:not(:checked) + .checkmark::after {
+        font-size: 18px;
+    }
 }
