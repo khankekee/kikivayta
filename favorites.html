@@ -10,6 +10,7 @@ body {
     align-items: center;
     height: 100vh;
     color: white;
+    overflow-x: hidden;
 }
 
 /* Khung chính */
@@ -20,6 +21,8 @@ body {
     width: 100%;
     max-width: 1200px;
     gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
 }
 
 /* Khung sở thích và câu hỏi có chiều rộng bằng nhau */
@@ -27,13 +30,14 @@ body {
 .questions-container {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
-    width: 48%; /* Đảm bảo chiều rộng của cả hai khung bằng nhau */
+    width: 48%;
+    min-width: 280px; /* Đảm bảo khung không quá nhỏ */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng cho khung ngoài */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Phần ghi chú sở thích */
@@ -44,9 +48,9 @@ body {
     padding: 30px;
     width: 100%;
     color: #333;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Thêm bóng cho note bên trong */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     text-align: center;
-    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+    box-sizing: border-box;
 }
 
 /* Phần câu hỏi và các tùy chọn */
@@ -162,7 +166,7 @@ body {
 }
 
 body {
-    animation: colorShift 5s infinite; /* Đổi màu nền liên tục */
+    animation: colorShift 5s infinite;
 }
 
 /* Media query cho điện thoại */
@@ -201,16 +205,16 @@ body {
 
     /* Cải thiện kích thước checkmark */
     .checkmark {
-        width: 25px; /* Đảm bảo hình checkmark không quá nhỏ */
+        width: 25px;
         height: 25px;
     }
 
     .question-radio:checked + .checkmark::after {
-        font-size: 18px; /* Giảm kích thước tick */
+        font-size: 18px;
     }
 
     .question-radio:not(:checked) + .checkmark::after {
-        font-size: 18px; /* Giảm kích thước dấu X */
+        font-size: 18px;
     }
 }
 
